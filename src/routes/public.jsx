@@ -28,6 +28,10 @@ const publicRoutes = [
     ),
   },
   {
+    path: '/__/auth/action',
+    element: <AuthActionHandler />,
+  },
+  {
     path: '/auth-action-error',
     element: (
       <PublicLayout>
