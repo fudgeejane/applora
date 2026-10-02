@@ -1,0 +1,32 @@
+export const resumes = [
+  {
+    id: 1,
+    name: 'Product Design Resume',
+    fileType: 'PDF',
+    uploadedAt: '2026-08-12',
+    updatedAt: '2026-09-04',
+    usedInApplications: 5,
+    status: 'Primary',
+    color: 'blue',
+  },
+  {
+    id: 2,
+    name: 'Research Resume',
+    fileType: 'DOCX',
+    uploadedAt: '2026-07-31',
+    updatedAt: '2026-08-27',
+    usedInApplications: 2,
+    status: 'Secondary',
+    color: 'green',
+  },
+  {
+    id: 3,
+    name: 'Analyst Resume',
+    fileType: 'PDF',
+    uploadedAt: '2026-06-18',
+    updatedAt: '2026-09-07',
+    usedInApplications: 3,
+    status: 'Tailored',
+    color: 'amber',
+  },
+]
