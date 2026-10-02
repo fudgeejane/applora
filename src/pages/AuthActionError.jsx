@@ -6,7 +6,9 @@ export default function AuthActionError() {
   const isMissing = searchParams.get('reason') === 'missing';
 
   return (
+
     <main className="grid min-h-[calc(100vh-80px)] place-items-center bg-slate-50 px-4 py-10">
+      
       <section className="w-full max-w-lg rounded-xl border border-slate-200 bg-white p-7 text-center shadow-sm">
         <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-amber-50 text-amber-700"><CircleAlert size={22} /></div>
         <h1 className="mt-5 text-2xl font-bold text-slate-900">{isMissing ? 'Incomplete account link' : 'Unable to process this link'}</h1>
@@ -16,6 +18,8 @@ export default function AuthActionError() {
           <Link to="/forgot-password" className="inline-flex min-h-10 items-center justify-center rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2">Reset password</Link>
         </div>
       </section>
+      
     </main>
+
   );
 }
