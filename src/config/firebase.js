@@ -4,8 +4,8 @@ import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
 	apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-	authDomain: window.location.hostname === 'applora-silk.vercel.app'
-		? window.location.hostname
+	authDomain: import.meta.env.PROD
+		? 'applora-silk.vercel.app'
 		: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
 	projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
 	storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
