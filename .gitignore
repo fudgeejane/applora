@@ -14,9 +14,6 @@ dist-ssr
 .env
 .env.*
 !.env.example
-firebase.json
-firebase.rules
-firestore.rules
 /markdown/
 
 # Editor directories and files

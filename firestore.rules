@@ -1,0 +1,49 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      function signedInAsUser() {
+        return request.auth != null && request.auth.uid == userId;
+      }
+
+      function validUserProfile() {
+        return request.resource.data.keys().hasOnly([
+            'name', 'firstName', 'lastName', 'email', 'createdAt', 'updatedAt'
+          ])
+          && request.resource.data.keys().hasAll([
+            'name', 'email', 'createdAt', 'updatedAt'
+          ])
+          && request.resource.data.name is string
+          && request.resource.data.name.size() > 0
+          && request.resource.data.name.size() <= 100
+          && (
+            !request.resource.data.keys().hasAny(['firstName', 'lastName'])
+            || (
+              request.resource.data.keys().hasAll(['firstName', 'lastName'])
+              && request.resource.data.firstName is string
+              && request.resource.data.firstName.size() > 0
+              && request.resource.data.firstName.size() <= 50
+              && request.resource.data.lastName is string
+              && request.resource.data.lastName.size() > 0
+              && request.resource.data.lastName.size() <= 50
+            )
+          )
+          && request.resource.data.email is string
+          && request.resource.data.email == request.auth.token.email;
+      }
+
+      allow read: if signedInAsUser();
+      allow create: if signedInAsUser()
+        && validUserProfile()
+        && request.resource.data.keys().hasAll(['firstName', 'lastName'])
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time;
+      allow update: if signedInAsUser()
+        && validUserProfile()
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.updatedAt == request.time;
+      allow delete: if false;
+    }
+  }
+}
