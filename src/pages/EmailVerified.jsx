@@ -96,7 +96,16 @@ export default function EmailVerified() {
 
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           {verified ? (
-            <button type="button" disabled={busy} onClick={continueToApp} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60">{busy ? 'Checking…' : <>Access Applora <ArrowRight size={16} /></>}</button>
+            <button 
+            type="button" 
+            disabled={busy} 
+            onClick={continueToApp} 
+            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+            > 
+              {busy ? 'Checking…' : <>
+                <span className='text-white'>Access Applora</span>
+              </>}
+            </button>
           ) : (
             <>
               {user && <button type="button" disabled={busy} onClick={resend} className="inline-flex min-h-10 items-center justify-center rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60">{busy ? 'Please wait…' : 'Resend verification email'}</button>}

@@ -45,5 +45,146 @@ service cloud.firestore {
         && request.resource.data.updatedAt == request.time;
       allow delete: if false;
     }
+
+    match /application/{applicationId} {
+      function validApplicationData() {
+        return request.resource.data.keys().hasOnly([
+            'uid', 'company', 'position', 'dateApplied', 'status', 'workplace', 'location', 'salary', 'currency', 'resume', 'source', 'user', 'userID', 'createdAt', 'updatedAt'
+          ])
+          && request.resource.data.uid is string
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.userID is string
+          && request.resource.data.userID == request.auth.uid
+          && request.resource.data.company is string
+          && request.resource.data.company.size() > 0
+          && request.resource.data.company.size() <= 100
+          && request.resource.data.position is string
+          && request.resource.data.position.size() > 0
+          && request.resource.data.position.size() <= 120
+          && request.resource.data.dateApplied is timestamp
+          && request.resource.data.status is string
+          && request.resource.data.status in ['Saved', 'Applied', 'Screening', 'Interview', 'Assessment', 'Offer', 'Rejected', 'Withdrawn']
+          && request.resource.data.workplace is string
+          && request.resource.data.workplace in ['Remote', 'Hybrid', 'Onsite']
+          && (
+            request.resource.data.location == null
+            || request.resource.data.location == ''
+            || request.resource.data.location is string
+          )
+          && (
+            request.resource.data.workplace != 'Remote'
+            || request.resource.data.location == null
+            || request.resource.data.location == ''
+          )
+          && (
+            request.resource.data.salary == null
+            || request.resource.data.salary is string
+            || request.resource.data.salary is number
+          )
+          && (
+            request.resource.data.currency == null
+            || (
+              request.resource.data.currency is string
+              && request.resource.data.currency.size() == 3
+            )
+          )
+          && (
+            request.resource.data.salary == null
+            || request.resource.data.currency is string
+          )
+          && request.resource.data.resume is string
+          && request.resource.data.resume.size() > 0
+          && request.resource.data.resume.size() <= 100
+          && (
+            request.resource.data.source == null
+            || request.resource.data.source == ''
+            || request.resource.data.source is string
+          )
+          && request.resource.data.user is string
+          && request.resource.data.user.size() > 0
+          && request.resource.data.userID == request.auth.uid
+          && request.resource.data.createdAt == request.time
+          && request.resource.data.updatedAt == request.time;
+      }
+
+      function validApplicationUpdate() {
+        return request.resource.data.keys().hasOnly([
+            'uid', 'company', 'position', 'dateApplied', 'status', 'workplace', 'location', 'salary', 'currency', 'resume', 'source', 'user', 'userID', 'createdAt', 'updatedAt'
+          ])
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.userID == request.auth.uid
+          && request.resource.data.company is string
+          && request.resource.data.company.size() > 0
+          && request.resource.data.company.size() <= 100
+          && request.resource.data.position is string
+          && request.resource.data.position.size() > 0
+          && request.resource.data.position.size() <= 120
+          && request.resource.data.dateApplied is timestamp
+          && request.resource.data.status is string
+          && request.resource.data.status in ['Saved', 'Applied', 'Screening', 'Interview', 'Assessment', 'Offer', 'Rejected', 'Withdrawn']
+          && request.resource.data.workplace is string
+          && request.resource.data.workplace in ['Remote', 'Hybrid', 'Onsite']
+          && (
+            request.resource.data.location == null
+            || request.resource.data.location == ''
+            || request.resource.data.location is string
+          )
+          && (
+            request.resource.data.workplace != 'Remote'
+            || request.resource.data.location == null
+            || request.resource.data.location == ''
+          )
+          && (
+            request.resource.data.salary == null
+            || request.resource.data.salary is string
+            || request.resource.data.salary is number
+          )
+          && (
+            request.resource.data.currency == null
+            || (
+              request.resource.data.currency is string
+              && request.resource.data.currency.size() == 3
+            )
+          )
+          && (
+            request.resource.data.salary == null
+            || request.resource.data.currency is string
+          )
+          && request.resource.data.resume is string
+          && request.resource.data.resume.size() > 0
+          && request.resource.data.resume.size() <= 100
+          && (
+            request.resource.data.source == null
+            || request.resource.data.source == ''
+            || request.resource.data.source is string
+          )
+          && request.resource.data.user is string
+          && request.resource.data.user.size() > 0
+          && request.resource.data.createdAt == resource.data.createdAt
+          && request.resource.data.updatedAt == request.time;
+      }
+
+      allow read: if request.auth != null
+        && (
+          resource.data.uid == request.auth.uid
+          || resource.data.userID == request.auth.uid
+        );
+
+      allow create: if request.auth != null
+        && validApplicationData();
+
+      allow update: if request.auth != null
+        && (
+          resource.data.uid == request.auth.uid
+          || resource.data.userID == request.auth.uid
+        )
+        && validApplicationUpdate();
+
+      allow delete: if request.auth != null
+        && (
+          resource.data.uid == request.auth.uid
+          || resource.data.userID == request.auth.uid
+        );
+    }
   }
 }
